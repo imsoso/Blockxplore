@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		7C0057AD2DD0851E00D44D99 /* SolanaSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 7C0057AC2DD0851E00D44D99 /* SolanaSwift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		7C00579D2DD0828900D44D99 /* BlockXplore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlockXplore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C0057AD2DD0851E00D44D99 /* SolanaSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = BlockXplore;
 			packageProductDependencies = (
+				7C0057AC2DD0851E00D44D99 /* SolanaSwift */,
 			);
 			productName = BlockXplore;
 			productReference = 7C00579D2DD0828900D44D99 /* BlockXplore.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = 7C0057942DD0828900D44D99;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				7C0057AB2DD0851E00D44D99 /* XCRemoteSwiftPackageReference "solana-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 7C00579E2DD0828900D44D99 /* Products */;
 			projectDirPath = "";
@@ -324,6 +333,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		7C0057AB2DD0851E00D44D99 /* XCRemoteSwiftPackageReference "solana-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/p2p-org/solana-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7C0057AC2DD0851E00D44D99 /* SolanaSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C0057AB2DD0851E00D44D99 /* XCRemoteSwiftPackageReference "solana-swift" */;
+			productName = SolanaSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 7C0057952DD0828900D44D99 /* Project object */;
 }
