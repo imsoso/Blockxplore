@@ -2,7 +2,7 @@
 //  BlockXploreApp.swift
 //  BlockXplore
 //
-//  Created by 1234 on 2025/5/11.
+//  Created by Soso on 2025/5/11.
 //
 
 import SwiftUI
