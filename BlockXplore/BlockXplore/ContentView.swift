@@ -20,8 +20,20 @@ struct ContentView: View {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
             }
             .padding()
+            
+            Button(action: {
+                checkAddress()
+            }) {
+                Label("Check", systemImage: "magnifyingglass")
+            }
+            .buttonStyle(.bordered)
+            .padding()
         }
         .padding()
+    }
+    
+    func checkAddress() {
+        // todo: Implement the logic to check the address
     }
 }
 
