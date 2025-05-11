@@ -6,10 +6,23 @@
 //
 
 import SwiftUI
+import SolanaSwift
 
 struct ContentView: View {
     @State private var address: String = ""
-    @State private var selectedNetwork: String = "Mainnet" // Default network
+    @State private var selectedNetwork: String = "Mainnet" // Local variable to store the selected network
+
+    var endpoint: APIEndPoint {
+        let ApiAddress = "https://devnet.helius-rpc.com/?api-key=7ad72601-5330-4af0-b238-175e3ed057d1"
+        switch selectedNetwork {
+        case "Testnet":
+            return APIEndPoint(address: ApiAddress, network: .testnet)
+        case "Devnet":
+            return APIEndPoint(address: ApiAddress, network: .devnet)
+        default:
+            return APIEndPoint(address: ApiAddress, network: .mainnetBeta)
+        }
+    }
 
     var body: some View {
         NavigationView {
@@ -24,7 +37,9 @@ struct ContentView: View {
                 .padding()
                 
                 Button(action: {
-                    checkAddress()
+                    Task {
+                        await checkAddress()
+                    }
                 }) {
                     Label("Check", systemImage: "magnifyingglass")
                 }
@@ -46,8 +61,14 @@ struct ContentView: View {
         }
     }
     
-    func checkAddress() {
-        // todo: Implement the logic to check the address
+    func checkAddress() async {
+        do {
+            let apiClient = JSONRPCAPIClient(endpoint: endpoint)
+            let result = try await apiClient.getBlockHeight()
+            print("Block height: \(result)")
+        } catch {
+            print("Error fetching block height: \(error)")
+        }
     }
 }
 
