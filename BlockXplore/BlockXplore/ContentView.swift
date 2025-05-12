@@ -14,22 +14,28 @@ struct ContentView: View {
     @State private var accountInfo: BufferInfo<AccountInfo>? = nil
     @State private var showAccountInfo = false
 
-    
-    public static let mainnetBetaAnkr = RPCEndpoint(
-        url: URL(string: "https://mainnet.helius-rpc.com/?api-key=7d9d37dd-ad9b-499c-98f72")!,
-        urlWebSocket: URL(string: "https://mainnet.helius-rpc.com/?api-key=7d9d37dd-ad9b-499c-98f7")!,
-        network: .mainnetBeta
-    )
-    
-    let endpoint = mainnetBetaAnkr
+    let baseURL: String
+    let rpcURL: String
+    let endpoint: RPCEndpoint
     let router: NetworkingRouter
     let solana: Solana
 
     init() {
+        guard let customRPC = Bundle.main.object(forInfoDictionaryKey: "Helius_RPC") as? String else {
+            fatalError("Helius_RPC not found in Configuration.xcconfig")
+        }
+        
+        self.baseURL = "mainnet.helius-rpc.com/?api-key="
+        self.rpcURL = baseURL + customRPC
+        
+        self.endpoint = RPCEndpoint(
+            url: URL(string: "https://"+rpcURL)!,
+            urlWebSocket: URL(string: "wss://"+rpcURL)!,
+            network: .mainnetBeta
+        )
         self.router = NetworkingRouter(endpoint: endpoint)
         self.solana = Solana(router: router)
     }
-
 
     var body: some View {
         NavigationView {
