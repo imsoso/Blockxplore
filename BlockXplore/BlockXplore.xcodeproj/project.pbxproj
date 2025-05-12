@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7C0057AD2DD0851E00D44D99 /* SolanaSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 7C0057AC2DD0851E00D44D99 /* SolanaSwift */; };
+		7C127FEB2DD191220017E42A /* Solana in Frameworks */ = {isa = PBXBuildFile; productRef = 7C127FEA2DD191220017E42A /* Solana */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,7 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7C0057AD2DD0851E00D44D99 /* SolanaSwift in Frameworks */,
+				7C127FEB2DD191220017E42A /* Solana in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,7 +70,7 @@
 			);
 			name = BlockXplore;
 			packageProductDependencies = (
-				7C0057AC2DD0851E00D44D99 /* SolanaSwift */,
+				7C127FEA2DD191220017E42A /* Solana */,
 			);
 			productName = BlockXplore;
 			productReference = 7C00579D2DD0828900D44D99 /* BlockXplore.app */;
@@ -101,7 +101,7 @@
 			mainGroup = 7C0057942DD0828900D44D99;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				7C0057AB2DD0851E00D44D99 /* XCRemoteSwiftPackageReference "solana-swift" */,
+				7C127FE92DD191220017E42A /* XCRemoteSwiftPackageReference "Solana" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 7C00579E2DD0828900D44D99 /* Products */;
@@ -335,21 +335,21 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		7C0057AB2DD0851E00D44D99 /* XCRemoteSwiftPackageReference "solana-swift" */ = {
+		7C127FE92DD191220017E42A /* XCRemoteSwiftPackageReference "Solana" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/p2p-org/solana-swift";
+			repositoryURL = "https://github.com/kk-vv/Solana.Swift";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.0;
+				minimumVersion = 1.2.4;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		7C0057AC2DD0851E00D44D99 /* SolanaSwift */ = {
+		7C127FEA2DD191220017E42A /* Solana */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 7C0057AB2DD0851E00D44D99 /* XCRemoteSwiftPackageReference "solana-swift" */;
-			productName = SolanaSwift;
+			package = 7C127FE92DD191220017E42A /* XCRemoteSwiftPackageReference "Solana" */;
+			productName = Solana;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
