@@ -79,12 +79,18 @@ struct ContentView: View {
                 print("Account Info: \(info)")
                 return
             } catch {
+//                print("Error during sleep: \(error)")
                 retryCount += 1
-                print("Error fetching account info (attempt \(retryCount)): \(error)")
+                print("Error fetching account info (attempt \(retryCount))")
                 if retryCount == maxRetries {
                     print("Max retry attempts reached. Please check your network connection.")
                 } else {
-                    await Task.sleep(2 * 1_000_000_000) // Wait for 2 seconds before retrying
+                    print("Retrying in 2 seconds...")
+                    do {
+                        try await Task.sleep(nanoseconds: 2 * 1_000_000_000) // Wait for 2 seconds before retrying
+                    } catch {
+                        print("Error during sleep: \(error)")
+                    }
                 }
             }
         }
