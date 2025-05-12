@@ -85,33 +85,45 @@ struct ContentView: View {
     
     func fetchAccountInfo(for address: String) async {
         print("address: \(address)")
-        var retryCount = 0
-        let maxRetries = 3
 
-        while retryCount < maxRetries {
-            do {
-                let info: BufferInfo<AccountInfo> = try await solana.api.getAccountInfo(account: address, decodedTo: AccountInfo.self)
-                print("Account Info: \(info)")
-                accountInfo = info
-                showAccountInfo = true
+        async let accountInfoResult: Void = fetchAccountInfoTask(for: address)
+        async let balanceResult: Void = fetchBalanceTask(for: address)
+        async let tokenBalanceResult: Void = fetchTokenBalanceTask(for: address)
 
-                return
-            } catch {
-//                print("Error during sleep: \(error)")
-                retryCount += 1
-                print("Error fetching account info (attempt \(retryCount))")
-                if retryCount == maxRetries {
-                    print("Max retry attempts reached. Please check your network connection.")
-                } else {
-                    print("Retrying in 2 seconds...")
-                    do {
-                        try await Task.sleep(nanoseconds: 2 * 1_000_000_000) // Wait for 2 seconds before retrying
-                    } catch {
-                        print("Error during sleep: \(error)")
-                    }
-                }
-            }
+        do {
+            try await accountInfoResult
+        } catch {
+            print("Error fetching account info: \(error)")
         }
+
+        do {
+            try await balanceResult
+        } catch {
+            print("Error fetching balance: \(error)")
+        }
+
+        do {
+            try await tokenBalanceResult
+        } catch {
+            print("Error fetching token balance: \(error)")
+        }
+    }
+
+    private func fetchAccountInfoTask(for address: String) async throws {
+        let info: BufferInfo<AccountInfo> = try await solana.api.getAccountInfo(account: address, decodedTo: AccountInfo.self)
+        print("Account Info: \(info)")
+        accountInfo = info
+        showAccountInfo = true
+    }
+
+    private func fetchBalanceTask(for address: String) async throws {
+        let balance = try await solana.api.getBalance(account: address)
+        print("Balance: \(balance / 1_000_000_000)")
+    }
+
+    private func fetchTokenBalanceTask(for address: String) async throws {
+        let tokenBalance = try await solana.api.getTokenAccountBalance(pubkey: address).amount
+        print("Token Balance: \(tokenBalance)")
     }
 }
 
