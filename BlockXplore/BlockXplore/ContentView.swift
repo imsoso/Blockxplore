@@ -8,10 +8,11 @@
 import SwiftUI
 import Solana
 
-
 struct ContentView: View {
     @State private var address: String = ""
     @State private var selectedNetwork: String = "Mainnet" // Local variable to store the selected network
+    @State private var accountInfo: BufferInfo<AccountInfo>? = nil
+    @State private var showAccountInfo = false
 
     
     public static let mainnetBetaAnkr = RPCEndpoint(
@@ -51,6 +52,14 @@ struct ContentView: View {
                 }
                 .buttonStyle(.bordered)
                 .padding()
+                if let accountInfo = accountInfo {
+                    NavigationLink(
+                        destination: AccountInfoView(accountInfo: accountInfo),
+                        isActive: $showAccountInfo
+                    ) {
+                        EmptyView()
+                    }
+                }
             }
             .padding()
             .toolbar {
@@ -77,6 +86,9 @@ struct ContentView: View {
             do {
                 let info: BufferInfo<AccountInfo> = try await solana.api.getAccountInfo(account: address, decodedTo: AccountInfo.self)
                 print("Account Info: \(info)")
+                accountInfo = info
+                showAccountInfo = true
+
                 return
             } catch {
 //                print("Error during sleep: \(error)")
