@@ -8,14 +8,14 @@
 import SwiftUI
 import Solana
 
-// 假设您的 Solana SDK (如 SolanaSwift) 提供了 PublicKey 和 AccountInfo 结构
-// 如果您使用的是 SolanaSwift，可以 import SolanaSwift
+// Assume your Solana SDK (e.g., SolanaSwift) provides PublicKey and AccountInfo structures
+// If you are using SolanaSwift, you can import SolanaSwift
 
-// 定义程序 ID 和数据长度常量，方便维护
+// Define constants for program IDs and data lengths for easier maintenance
 struct SolanaConstants {
     static let SystemProgramID = "11111111111111111111111111111111"
     static let TokenProgramID = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
-    // static let BPFLoaderUpgradeableProgramID = "BPFLoaderUpgradeab1e11111111111111111111111" // 可选，executable 标志更直接
+    // static let BPFLoaderUpgradeableProgramID = "BPFLoaderUpgradeab1e11111111111111111111111" // Optional, executable flag is more direct
 
     static let MintAccountDataLength: Int = 82
     static let TokenAccountDataLength: Int = 165
@@ -24,9 +24,9 @@ struct SolanaConstants {
 struct ContentView: View {
     @State private var address: String = "dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH"
     @State private var selectedNetwork: String = "Mainnet"
-    // @State private var accountInfo: BufferInfo<AccountInfo>? = nil // 旧的，我们将用 determinedAccountType
-    @State private var determinedAccountType: AccountType? = nil // 新增：存储判断出的账户类型
-    @State private var showAccountInfoView = false // 修改变量名以更清晰区分
+    // @State private var accountInfo: BufferInfo<AccountInfo>? = nil // Old, replaced with determinedAccountType
+    @State private var determinedAccountType: AccountType? = nil // New: Stores the determined account type
+    @State private var showAccountInfoView = false // Renamed variable for clearer distinction
 
     let baseURL: String
     let rpcURL: String
@@ -54,7 +54,7 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                // 背景渐变
+                // Background gradient
                 LinearGradient(
                     gradient: Gradient(colors: [Color.blue, Color.purple]),
                     startPoint: .topLeading,
@@ -74,7 +74,7 @@ struct ContentView: View {
                     HStack {
                         Image(systemName: "globe")
                             .imageScale(.large)
-                            .foregroundColor(.white) // 设置图标颜色为白色
+                            .foregroundColor(.white) // Set the icon color to white
                         TextField("Paste address here", text: $address)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                     }
@@ -86,20 +86,20 @@ struct ContentView: View {
                         }
                     }) {
                         Label("Check", systemImage: "magnifyingglass")
-                            .foregroundColor(.white) // 设置按钮文字和图标颜色为白色
+                            .foregroundColor(.white) // Set the button text and icon color to white
 
                     }
                     .buttonStyle(.bordered)
                     .tint(.white) // Optional: Set the border color to white
                     .padding()
                     
-                    // NavigationLink 用于在 determinedAccountType 设置后导航
+                    // NavigationLink used to navigate after determinedAccountType is set
                     NavigationLink(
-                        destination: Group { // 使用 Group 允许条件视图
+                        destination: Group { // Use Group to allow conditional views
                             if let type = determinedAccountType {
                                 AccountInfoView(accountType: type)
                             } else {
-                                // 如果 determinedAccountType 为 nil (不应在 showAccountInfoView 为 true 时发生)
+                                // If determinedAccountType is nil (should not happen when showAccountInfoView is true)
                                 Text("Loading details or error...")
                             }
                         },
@@ -125,8 +125,8 @@ struct ContentView: View {
     }
     
     func fetchAndClassifyAccountInfo(for address: String) async {
-        self.determinedAccountType = nil // 重置状态
-        self.showAccountInfoView = false   // 重置导航触发器
+        self.determinedAccountType = nil // Reset state
+        self.showAccountInfoView = false   // Reset navigation trigger
 
         print("Fetching and classifying account: \(address)")
 
@@ -137,20 +137,20 @@ struct ContentView: View {
         }
 
         do {
-            // 1. 获取账户信息
-            // 假设 AccountInfo 结构体 (通过 decodedTo: AccountInfo.self 获取) 包含以下字段:
-            //   owner: String (Base58编码的公钥) 或 PublicKey
+            // 1. Fetch account information
+            // Assume AccountInfo structure (obtained via decodedTo: AccountInfo.self) contains the following fields:
+            //   owner: String (Base58-encoded public key) or PublicKey
             //   executable: Bool
-            //   data: 通常是一个包含原始字节的类型 (如 Data, [UInt8]) 或一个可以获取原始字节的结构
+            //   data: Usually a type containing raw bytes (e.g., Data, [UInt8]) or a structure that can access raw bytes
             //   lamports: UInt64
             //   rentEpoch: UInt64
-            //   (对于SolanaSwift, `AccountInfo` 结构内的 `data` 字段是 `AccountInfoData` 枚举)
+            //   (For SolanaSwift, the `data` field in `AccountInfo` structure is an `AccountInfoData` enum)
 
-            // 为了更可靠地获取原始数据长度，特别是对于 Token Program 拥有的账户，
-            // 最好是获取原始的 base64 编码数据，然后计算其字节长度。
-            // 很多 Solana SDK 允许你获取原始的 base64 编码的 data 数组。
-            // 这里我们先尝试直接用 decodedTo: AccountInfo.self，并假设可以从中获取数据长度。
-            // 如果不行，则需要调整为先获取原始数据。
+            // To reliably get the raw data length, especially for accounts owned by the Token Program,
+            // it is best to fetch the raw base64-encoded data and calculate its byte length.
+            // Many Solana SDKs allow you to fetch the raw base64-encoded data array.
+            // Here we first try using decodedTo: AccountInfo.self and assume we can get the data length from it.
+            // If not, adjust to fetch the raw data first.
 
             let info: BufferInfo<AccountInfo> = try await solana.api.getAccountInfo(account: address, decodedTo: AccountInfo.self)
             
@@ -162,10 +162,10 @@ struct ContentView: View {
 
             var determinedType: AccountType?
 
-            // 2. 判断 PDA (Program Derived Address)
-            // PublicKey(string: address) 已在函数开头创建为 publicKey
+            // 2. Determine PDA (Program Derived Address)
+            // PublicKey(string: address) was already created as publicKey at the start of the function
   
-            // 3. 如果在曲线上，进行其他判断
+            // 3. If on the curve, perform other checks
             if isExecutable {
                 determinedType = .programAccount
             } else if ownerString == SolanaConstants.TokenProgramID {
@@ -174,31 +174,31 @@ struct ContentView: View {
             } else if ownerString == SolanaConstants.SystemProgramID {
                 determinedType = .systemAccount
             } else {
-                // 在曲线上，不可执行，非TokenProgram或SystemProgram拥有。
-                // 这可能是自定义程序的数据账户。
-                // 根据您对 PDA 的描述 "应用管理数据"，这类账户有时也广义地被视为类似 PDA 的角色。
-                // 但严格来说 PDA 是指地址不在曲线上的。
-                // 如果没有更合适的分类，可以暂时不分类或设定一个默认/未知类型。
+                // On-curve, not executable, not owned by System/Token Program.
+                // This may be a custom program's data account.
+                // Based on your description of PDA as "application-managed data," such accounts are sometimes broadly considered similar to PDAs.
+                // However, strictly speaking, PDA refers to addresses not on the curve.
+                // If no better classification exists, you can leave it unclassified or set a default/unknown type.
                 print("Account \(address) is on-curve, not executable, not owned by System/Token Program. Owner: \(ownerString). Classification unclear.")
-                // 暂时不将其归类，或者您可以根据需求，如果它确实是应用管理的数据，也归为 .pda (但这不符合严格定义)
-                // determinedType = .pda // (可选，如果想更宽松地定义 PDA)
+                // Temporarily leave it unclassified, or if it is indeed application-managed data, classify it as .pda (though this does not strictly match the definition)
+                // determinedType = .pda // (Optional, if you want to define PDA more loosely)
             }
 
             if let type = determinedType {
                 self.determinedAccountType = type
-                self.showAccountInfoView = true // 触发导航
+                self.showAccountInfoView = true // Trigger navigation
                 print("Determined Account Type for \(address): \(type.label)")
             } else {
                 print("Could not determine account type for \(address)")
-                // TODO: 向用户显示无法确定类型的信息
+                // TODO: Show the user information about the inability to determine the type
             }
 
         } catch {
             print("Error fetching or classifying account info for \(address): \(error)")
-            // TODO: 向用户显示错误信息
+            // TODO: Show the user error information
         }
 
-        // 其他异步任务可以保持不变，如果它们用于UI的其他部分或日志记录
+        // Other asynchronous tasks can remain unchanged if they are used for other parts of the UI or logging
         Task {
             do { try await fetchBalanceTask(for: address) } catch { print("Error in concurrent balance fetch: \(error)") }
         }
@@ -207,7 +207,7 @@ struct ContentView: View {
         }
     }
 
-    // fetchAccountInfoTask 不再直接使用，其逻辑已合并到 fetchAndClassifyAccountInfo
+    // fetchAccountInfoTask is no longer directly used; its logic has been merged into fetchAndClassifyAccountInfo
     // private func fetchAccountInfoTask(for address: String) async throws { ... }
 
     private func fetchBalanceTask(for address: String) async throws {
@@ -216,10 +216,10 @@ struct ContentView: View {
     }
 
     private func fetchTokenBalanceTask(for address: String) async throws {
-        // 注意: getTokenAccountBalance 只对 TokenAccount 有效。如果地址不是TokenAccount，会报错。
-        // 最好在确定账户是 TokenAccount 后再调用，或处理潜在的错误。
+        // Note: getTokenAccountBalance is only valid for TokenAccount. If the address is not a TokenAccount, it will throw an error.
+        // It is best to call this after confirming the account is a TokenAccount or handle potential errors.
         do {
-            let tokenBalanceResult = try await solana.api.getTokenAccountBalance(pubkey: address, commitment: nil) // commitment 可选
+            let tokenBalanceResult = try await solana.api.getTokenAccountBalance(pubkey: address, commitment: nil) // commitment is optional
             print("Token Balance (raw amount): \(tokenBalanceResult.uiAmountString ?? "N/A") (decimals: \(tokenBalanceResult.decimals))")
         } catch {
             print("Could not fetch token balance for \(address) (may not be a token account or error occurred): \(error.localizedDescription)")
