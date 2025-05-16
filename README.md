@@ -29,7 +29,7 @@
 
 * **SwiftUI:** For building the user interface.
 * **Solana.swift:** A Swift SDK for interacting with the Solana blockchain. (Assumed, based on `import Solana` statements)
-* **Helius RPC:** The application is configured to use Helius RPC for Solana data.
+* **Helius RPC:** The application is configured to use Helius RPC for Solana data.(Set your own RPC in Configuration.xcconfig)
 
 ### Project Files Overview
 
